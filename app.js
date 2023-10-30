@@ -8,6 +8,14 @@ const router = require("./routes/index.routes")
 app.use(express.json())
 app.use("/api/v1",router)
 
+app.get("/",(req,res) => {
+    res.json({
+        status : "succes",
+        message : "hello world",
+        data : null
+    })
+})
+
 app.use((err ,req ,res ,next )  =>  {
     console.log(err);
     if (err.cause === 400) {
