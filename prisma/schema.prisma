@@ -17,3 +17,8 @@ model Gambar {
   url String
   file_id String
 }
+
+model Post {
+    id      Int      @id @default(autoincrement())
+    judul String
+}
