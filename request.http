@@ -4,15 +4,27 @@ GET http://localhost:3000/api/v1/findAll
 GET http://localhost:3000/api/v1/findById/
 
 ####
-DELETE http://localhost:3000/api/v1/remove/2
+DELETE http://localhost:3000/api/v1/remove/4
 
 
 
 ####
-PUT http://localhost:3000/api/v1/update/1
+PUT http://localhost:3000/api/v1/update/3
 Content-Type: application/json
 
 {
     "judul" : "updated judul",
     "deskripsi" : "updated deskripsi"
 }
+
+
+###
+
+PUT http://localhost:3000/api/v1/resize/7
+Content-Type: application/json
+
+{
+    "size" : "300",
+    "quality" : "100"
+}
+
