@@ -149,5 +149,57 @@ module.exports = {
         } catch (err) {
             next(err)
         }
+    },
+
+    resizeImage : async (req,res,next) => {
+        try {
+            const id  = Number(req.params.id)
+            
+            const size = req.body.size 
+            const quality = req.body.quality 
+
+            console.log(quality);
+            
+            if (isNaN(id) || !id) throw new Error("id not valid", {cause : 400}) 
+            if (isNaN(size) || size < 0 ) throw new Error("size not valid", {cause : 400}) 
+            if (isNaN(quality) || quality < 0) throw new Error("quality not valid", {cause : 400}) 
+
+            const foundImage = await prisma.gambar.findUnique({
+                 where : {
+                    id : id
+                }
+            })
+
+            const oldUrl = (foundImage.url).slice(8)
+            let splitter = oldUrl.split('/')
+
+            if (splitter.length > 3) {
+                splitter[2] = `tr:w-${size},q-${quality}`
+            } else {
+                splitter[3] = splitter[2]
+                splitter[2] = `tr:w-${size},q-${quality}`
+            }
+
+            const resizedUrl = 'https://'+(splitter.join("/"))
+
+
+            if (!foundImage) throw new Error("No image found", {cause : 400})
+            const updated = await prisma.gambar.update({
+                where : {
+                    id : id
+                },
+                data : {
+                    url : resizedUrl
+                }
+            })
+            const result = {
+                status : "success",
+                message : "succesfullly update image info",
+                data : updated
+            }
+            res.json(result)
+        } catch (err) {
+            next(err)
+        }
     }
 }
